@@ -252,3 +252,31 @@ class SamuraiGuard(Monster):
             X.halve_stats(round_up=True, halve_cost=True)
         )
     )
+
+@card(
+    BASE_ID+8,
+    name="Cowgirl Susie",
+    description="{{KW:HASTE}}. Before this attacks a monster, make it {{KW:WANTED}}. {{KW:MAGIC}}: Summon an enemy {{CARD:136|1}}.",
+    cost=6,
+    attack=6,
+    hp=8,
+    keywords=HASTE,
+    rarity=EPIC,
+    image=CustomImage("images/Cowgirl_Susie.png"),
+    expansion=Expansion.DELTARUNE,
+    localizations={
+        'en': LocalizedText(
+            name="Cowgirl Susie{{PLURAL:$1||s}}",
+            description="{{KW:HASTE}}. Before this attacks a monster, make it {{KW:WANTED}}. {{KW:MAGIC}}: Summon an enemy {{CARD:136|1}}.",
+        ),
+    },
+)
+class CowgirlSusie(Monster):
+    magic = GENERATE_CARD("Cactus", controller=OPPONENT).summon(controller=OPPONENT)
+
+    @on_event(AttackDeclaredResult)
+    def on_attack_declared(self, res: AttackDeclaredResult, game, **kwargs):
+        if res.attacker_id != self.id:
+            return None
+
+        return AddKeyword(target=res.defender_id, keyword=WANTED)
