@@ -10,6 +10,9 @@ from deltacards.model.cards import cards
 
 
 CONTENT_MODULES = [
+    # Custom
+    'deltacards.content.custom.custom'
+
     # Cards
     'deltacards.content.cards.expansions.base.base',
     'deltacards.content.cards.expansions.base.common',
